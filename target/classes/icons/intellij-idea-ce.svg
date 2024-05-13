@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+    <defs>
+        <radialgradient id="intellij-idea-ce_intellij-idea-ce_svg__a" cx="0" cy="0" r="1"
+            gradientTransform="translate(61.722 1.696) scale(84.0131)" gradientUnits="userSpaceOnUse">
+            <stop offset=".03" stop-color="#FE2857"></stop>
+            <stop offset=".71" stop-color="#007EFF"></stop>
+        </radialgradient>
+    </defs>
+    <path fill="url(#intellij-idea-ce_intellij-idea-ce_svg__a)"
+        d="M59.875 0H25.709a4.125 4.125 0 0 0-2.917 1.208L1.208 22.792A4.124 4.124 0 0 0 0 25.709v34.166A4.125 4.125 0 0 0 4.125 64h34.166a4.124 4.124 0 0 0 2.917-1.208l21.583-21.584a4.123 4.123 0 0 0 1.208-2.916L64 4.126A4.125 4.125 0 0 0 59.875 0V0Z">
+    </path>
+    <path fill="#000" d="M52 12H12v40h40V12Z"></path>
+    <path fill="#fff"
+        d="M33 44H17v3h16v-3ZM16.998 29.383h2.98v-9.775h-2.98v-2.616h8.843v2.616h-2.98v9.775h2.98V32h-8.843v-2.616ZM27.643 29.298h2.154a2.38 2.38 0 0 0 1.163-.279c.34-.186.602-.448.788-.788.186-.34.279-.727.279-1.163V16.992h2.926v10.28c0 .9-.207 1.709-.622 2.427a4.45 4.45 0 0 1-1.715 1.688c-.728.408-1.546.611-2.454.611h-2.519v-2.7Z">
+    </path>
+</svg>

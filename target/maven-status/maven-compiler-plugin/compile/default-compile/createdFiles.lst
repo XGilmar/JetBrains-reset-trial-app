@@ -1,0 +1,7 @@
+com/dev/reset/trial/app/view/components/items/ItemComponent.class
+com/dev/reset/trial/app/utils/WrapLayout.class
+com/dev/reset/trial/app/models/WindowsProduct.class
+com/dev/reset/trial/app/models/LinuxProduct.class
+com/dev/reset/trial/app/ResetTrialApp.class
+com/dev/reset/trial/app/view/FormMain.class
+com/dev/reset/trial/app/controllers/AppController.class
