@@ -1,6 +1,6 @@
 package com.dev.reset.trial.app.models;
 
-import com.dev.reset.trial.app.view.FormMain;
+import com.dev.reset.trial.app.view.AppView;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -26,30 +26,29 @@ public class WindowsProduct {
     private void createAndRunScriptWindows() throws IOException, InterruptedException {
         String bashCommands = generateSingleBashCommandWindows();
         File scriptFile = createScriptFileWindows(bashCommands);
-        makeScriptExecutableWindows(scriptFile);
-        executeScriptWindows(scriptFile);
+        scriptFile.setExecutable(true);
+        executeScriptWindows();
         deleteScriptFileWindows(scriptFile);
     }
 
     private String generateSingleBashCommandWindows() {
-        StringBuilder commandBuilder = new StringBuilder();
-        commandBuilder.append("@echo off\n");
-        commandBuilder.append("echo [ INFO ] Removing JavaSoft key user...\n");
-        commandBuilder.append("reg delete \"HKEY_CURRENT_USER\\Software\\JavaSoft\" /f\n");
-        commandBuilder.append("if %ERRORLEVEL% equ 0 (\n");
-        commandBuilder.append("echo [ OK ] Key removed successfully.\n");
-        commandBuilder.append(") else (\n");
-        commandBuilder.append("echo [ ! ] key has been removed.\n");
-        commandBuilder.append(")\n");
 
-        commandBuilder.append("echo [ INFO ] Removing PermanentUserId...\n");
-        commandBuilder.append("del /F /Q \"%APPDATA%\\JetBrains\\PermanentUserId\"\n");
-        commandBuilder.append("if %ERRORLEVEL% equ 0 (\n");
-        commandBuilder.append("echo [ OK ] PermanentUserId remove successfully.\n");
-        commandBuilder.append(") else (\n");
-        commandBuilder.append("echo [ ! ] PermanentUserId has been removed.\n");
-        commandBuilder.append(")");
-        return commandBuilder.toString();
+        return """
+                @echo off
+                echo [ INFO ] Removing JavaSoft key user...
+                reg delete "HKEY_CURRENT_USER\\Software\\JavaSoft" /f
+                if %ERRORLEVEL% equ 0 (
+                echo [ OK ] Key removed successfully.
+                ) else (
+                echo [ ! ] key has been removed.
+                )
+                echo [ INFO ] Removing PermanentUserId...
+                del /F /Q "%APPDATA%\\JetBrains\\PermanentUserId"
+                if %ERRORLEVEL% equ 0 (
+                echo [ OK ] PermanentUserId remove successfully.
+                ) else (
+                echo [ ! ] PermanentUserId has been removed.
+                )""";
     }
 
     private File createScriptFileWindows(String bashCommands) throws IOException {
@@ -63,11 +62,9 @@ public class WindowsProduct {
         return scriptFile;
     }
 
-    private void makeScriptExecutableWindows(File scriptFile) {
-        scriptFile.setExecutable(true);
-    }
 
-    private void executeScriptWindows(File scriptFile) throws IOException, InterruptedException {
+
+    private void executeScriptWindows() throws IOException, InterruptedException {
         ProcessBuilder processBuilder = new ProcessBuilder(
                 ".\\" + SCRIPT_FILENAME);
         processBuilder.directory(new File(System.getProperty("user.dir")));
@@ -87,15 +84,15 @@ public class WindowsProduct {
                         .append("</span>")
                         .append("<br>");
             }
-            FormMain.showText(builder.toString());
+            AppView.showText(builder.toString());
         }
     }
 
     private void deleteScriptFileWindows(File scriptFile) {
         if (scriptFile.delete()) {
-            System.out.println("El script se eliminó correctamente.");
+            System.out.println("Remove script successfully.");
         } else {
-            System.out.println("No se pudo eliminar el script.");
+            System.out.println("Failed remove script.");
         }
     }
 

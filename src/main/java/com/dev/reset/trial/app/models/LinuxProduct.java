@@ -1,6 +1,6 @@
 package com.dev.reset.trial.app.models;
 
-import com.dev.reset.trial.app.view.FormMain;
+import com.dev.reset.trial.app.view.AppView;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -29,8 +29,8 @@ public class LinuxProduct {
     private void createAndRunScriptLinux(List<String> product) throws IOException, InterruptedException {
         List<String> bashCommands = generateBashCommandsLinux(product);
         File scriptFile = createScriptFileLinux(bashCommands);
-        makeScriptExecutableLinux(scriptFile);
-        executeScriptLinux(scriptFile);
+        scriptFile.setExecutable(true);
+        executeScriptLinux();
         deleteScriptFileLinux(scriptFile);
     }
 
@@ -43,45 +43,39 @@ public class LinuxProduct {
     }
 
     private String generateSingleBashCommandLinux(String product) {
-        StringBuilder commandBuilder = new StringBuilder();
-        commandBuilder.append("#!/bin/bash\n");
-        commandBuilder.append("config_path=").append(CONFIG_PATH).append("\n");
         String resultPath = CONFIG_PATH + product;
-        commandBuilder.append("result_path=").append(resultPath).append("\n");
-        commandBuilder.append("product_name=$(basename $result_path*)\n");
-        commandBuilder.append("name_path=$config_path$product_name\n");
 
-        commandBuilder.append("if [ -d $name_path ]; then\n");
-        commandBuilder.append("echo \"[ INFO ] Resetting trial period for [$product_name]\"\n");
-
-        commandBuilder.append("echo \"[ INFO ] Removing Evaluation Key...\"\n");
-        commandBuilder.append("rm -rf $name_path/eval &>/dev/null\n");
-        commandBuilder.append("if [ $? -eq 0 ]; then\n");
-        commandBuilder.append("echo \"[ OK ] Evaluation Key removed successfully.\"\n");
-        commandBuilder.append("else\n");
-        commandBuilder.append("echo \"[ ERROR ] Failed to remove Evaluation Key.\"\n");
-        commandBuilder.append("fi\n");
-
-        commandBuilder.append("echo \"[ INFO ] Removing all evlsprt properties in options.xml...\"\n");
-        commandBuilder.append("sed -i 's/evlsprt//' $name_path/options/other.xml &>/dev/null\n");
-        commandBuilder.append("if [ $? -eq 0 ]; then\n");
-        commandBuilder.append("echo \"[ OK ] evlsprt properties removed successfully.\"\n");
-        commandBuilder.append("else\n");
-        commandBuilder.append("echo \"[ ERROR ] Failed to remove evlsprt properties.\"\n");
-        commandBuilder.append("fi\n");
-
-        commandBuilder.append("echo \"[ INFO ] Removing userPrefs files...\"\n");
-        commandBuilder.append("rm -rf ~/.java/.userPrefs &>/dev/null\n");
-        commandBuilder.append("if [ $? -eq 0 ]; then\n");
-        commandBuilder.append("echo \"[ OK ] userPrefs files removed successfully.\"\n");
-        commandBuilder.append("else\n");
-        commandBuilder.append("echo \"[ ERROR ] Failed to remove userPrefs files.\"\n");
-        commandBuilder.append("fi\n");
-
-        commandBuilder.append("else\n");
-        commandBuilder.append("echo \"[ WARN ] Directory for $product_name does not exist.\"\n");
-        commandBuilder.append("fi");
-        return commandBuilder.toString();
+        return "#!/bin/bash\n" +
+                "config_path=" + CONFIG_PATH + "\n" +
+                "result_path=" + resultPath + "\n" +
+                "product_name=$(basename $result_path*)\n" +
+                "name_path=$config_path$product_name\n" +
+                "if [ -d $name_path ]; then\n" +
+                "echo \"[ INFO ] Resetting trial period for [$product_name]\"\n" +
+                "echo \"[ INFO ] Removing Evaluation Key...\"\n" +
+                "rm -rf $name_path/eval &>/dev/null\n" +
+                "if [ $? -eq 0 ]; then\n" +
+                "echo \"[ OK ] Evaluation Key removed successfully.\"\n" +
+                "else\n" +
+                "echo \"[ ERROR ] Failed to remove Evaluation Key.\"\n" +
+                "fi\n" +
+                "echo \"[ INFO ] Removing all evlsprt properties in options.xml...\"\n" +
+                "sed -i 's/evlsprt//' $name_path/options/other.xml &>/dev/null\n" +
+                "if [ $? -eq 0 ]; then\n" +
+                "echo \"[ OK ] evlsprt properties removed successfully.\"\n" +
+                "else\n" +
+                "echo \"[ ERROR ] Failed to remove evlsprt properties.\"\n" +
+                "fi\n" +
+                "echo \"[ INFO ] Removing userPrefs files...\"\n" +
+                "rm -rf ~/.java/.userPrefs &>/dev/null\n" +
+                "if [ $? -eq 0 ]; then\n" +
+                "echo \"[ OK ] userPrefs files removed successfully.\"\n" +
+                "else\n" +
+                "echo \"[ ERROR ] Failed to remove userPrefs files.\"\n" +
+                "fi\n" +
+                "else\n" +
+                "echo \"[ WARN ] Directory for $product_name does not exist.\"\n" +
+                "fi";
     }
 
     private File createScriptFileLinux(List<String> bashCommands) throws IOException {
@@ -95,11 +89,9 @@ public class LinuxProduct {
         return scriptFile;
     }
 
-    private void makeScriptExecutableLinux(File scriptFile) {
-        scriptFile.setExecutable(true);
-    }
 
-    private void executeScriptLinux(File scriptFile) throws IOException, InterruptedException {
+
+    private void executeScriptLinux() throws IOException, InterruptedException {
         ProcessBuilder processBuilder = new ProcessBuilder("./" + SCRIPT_FILENAME);
         processBuilder.directory(new File(System.getProperty("user.dir")));
         processBuilder.redirectErrorStream(true);
@@ -118,15 +110,15 @@ public class LinuxProduct {
                         .append("</span>")
                         .append("<br>");
             }
-            FormMain.showText(builder.toString());
+            AppView.showText(builder.toString());
         }
     }
 
     public void deleteScriptFileLinux(File scriptFile) {
         if (scriptFile.delete()) {
-            System.out.println("El script se eliminó correctamente.");
+            System.out.println("Remove script successfully.");
         } else {
-            System.out.println("No se pudo eliminar el script.");
+            System.out.println("Failed remove script.");
         }
     }
 
