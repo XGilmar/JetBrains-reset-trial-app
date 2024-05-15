@@ -4,10 +4,13 @@
 ## video
 https://gist.github.com/assets/86094668/3f470d00-204d-43df-9f11-c8f358333860
 
-## 💻 required
-- jdk 17
+### 💻 required
+- JDK 17
+  
+### Avaliable environment
 - Linux
 - Windows
+- ```soon Mac os```
 
 ## Demo
 [Download](target/reset-trial-app-1.0-jar-with-dependencies.jar?raw=true)
