@@ -1,6 +1,7 @@
 package com.dev.reset.trial.app.controllers;
 
 import com.dev.reset.trial.app.models.LinuxProduct;
+import com.dev.reset.trial.app.models.MacProduct;
 import com.dev.reset.trial.app.models.WindowsProduct;
 import com.dev.reset.trial.app.view.AppView;
 import com.dev.reset.trial.app.view.components.items.ItemComponent;
@@ -143,7 +144,7 @@ public class AppController extends MouseAdapter implements ActionListener {
         if (osName.contains("win")) {
             new WindowsProduct().resetProductWindows();
         } else if (osName.contains("mac")) {
-            AppView.showText("macOS not available.");
+            new MacProduct().resetProductMac();
         } else if (osName.contains("nix") || osName.contains("nux") || osName.contains("aix")) {
             new LinuxProduct().resetProductLinux(name);
         } else {

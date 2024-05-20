@@ -45,37 +45,39 @@ public class LinuxProduct {
     private String generateSingleBashCommandLinux(String product) {
         String resultPath = CONFIG_PATH + product;
 
-        return "#!/bin/bash\n" +
-                "config_path=" + CONFIG_PATH + "\n" +
-                "result_path=" + resultPath + "\n" +
-                "product_name=$(basename $result_path*)\n" +
-                "name_path=$config_path$product_name\n" +
-                "if [ -d $name_path ]; then\n" +
-                "echo \"[ INFO ] Resetting trial period for [$product_name]\"\n" +
-                "echo \"[ INFO ] Removing Evaluation Key...\"\n" +
-                "rm -rf $name_path/eval &>/dev/null\n" +
-                "if [ $? -eq 0 ]; then\n" +
-                "echo \"[ OK ] Evaluation Key removed successfully.\"\n" +
-                "else\n" +
-                "echo \"[ ERROR ] Failed to remove Evaluation Key.\"\n" +
-                "fi\n" +
-                "echo \"[ INFO ] Removing all evlsprt properties in options.xml...\"\n" +
-                "sed -i 's/evlsprt//' $name_path/options/other.xml &>/dev/null\n" +
-                "if [ $? -eq 0 ]; then\n" +
-                "echo \"[ OK ] evlsprt properties removed successfully.\"\n" +
-                "else\n" +
-                "echo \"[ ERROR ] Failed to remove evlsprt properties.\"\n" +
-                "fi\n" +
-                "echo \"[ INFO ] Removing userPrefs files...\"\n" +
-                "rm -rf ~/.java/.userPrefs &>/dev/null\n" +
-                "if [ $? -eq 0 ]; then\n" +
-                "echo \"[ OK ] userPrefs files removed successfully.\"\n" +
-                "else\n" +
-                "echo \"[ ERROR ] Failed to remove userPrefs files.\"\n" +
-                "fi\n" +
-                "else\n" +
-                "echo \"[ WARN ] Directory for $product_name does not exist.\"\n" +
-                "fi";
+        return """
+           #!/bin/bash
+           config_path=%s
+           result_path=%s
+           product_name=$(basename $result_path*)
+           name_path=$config_path$product_name
+           if [ -d $name_path ]; then
+               echo "[ INFO ] Resetting trial period for [$product_name]"
+               echo "[ INFO ] Removing Evaluation Key..."
+               rm -rf $name_path/eval &>/dev/null
+               if [ $? -eq 0 ]; then
+                   echo "[ OK ] Evaluation Key removed successfully."
+               else
+                   echo "[ ERROR ] Failed to remove Evaluation Key."
+               fi
+               echo "[ INFO ] Removing all evlsprt properties in options.xml..."
+               sed -i 's/evlsprt//' $name_path/options/other.xml &>/dev/null
+               if [ $? -eq 0 ]; then
+                   echo "[ OK ] evlsprt properties removed successfully."
+               else
+                   echo "[ ERROR ] Failed to remove evlsprt properties."
+               fi
+               echo "[ INFO ] Removing userPrefs files..."
+               rm -rf ~/.java/.userPrefs &>/dev/null
+               if [ $? -eq 0 ]; then
+                   echo "[ OK ] userPrefs files removed successfully."
+               else
+                   echo "[ ERROR ] Failed to remove userPrefs files."
+               fi
+           else
+               echo "[ WARN ] Directory for $product_name does not exist."
+           fi
+           """.formatted(CONFIG_PATH, resultPath);
     }
 
     private File createScriptFileLinux(List<String> bashCommands) throws IOException {

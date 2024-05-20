@@ -22,9 +22,11 @@ public class ItemComponent extends JPanel {
         labelText = new JLabel();
         checkBox = new JCheckBox();
 
+        MigLayout layout = new MigLayout("", "[][]push[]");
         putClientProperty(FlatClientProperties.STYLE, "arc:10;"
                 + "background:lighten(@background,3%);");
-        MigLayout layout = new MigLayout("", "[][]push[]");
+        setMinimumSize(new Dimension(180, 38));
+        setMaximumSize(new Dimension(180, 38));
         setPreferredSize(new Dimension(180, 38));
         setLayout(layout);
 

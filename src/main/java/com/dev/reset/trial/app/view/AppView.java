@@ -133,9 +133,10 @@ public class AppView extends javax.swing.JFrame {
         JScrollPane scroll = (JScrollPane) component.getParent().getParent();
         scroll.setBorder(BorderFactory.createEmptyBorder());
         scroll.getVerticalScrollBar().putClientProperty(FlatClientProperties.STYLE,
-                "background:lighten(@background,2%);"
-                        + "track:lighten(@background,2%);"
-                        + "trackArc:999");
+                 "trackArc:999;"
+                + "trackInsets:3,3,3,3;"
+                + "thumbInsets:3,3,3,3;"
+                + "background:$Table.background;");
 
     }
 
