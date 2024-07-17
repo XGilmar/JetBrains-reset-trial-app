@@ -4,7 +4,7 @@
 
 ### Video
 
-https://gist.github.com/assets/86094668/3f470d00-204d-43df-9f11-c8f358333860
+https://github.com/user-attachments/assets/05b19d53-6087-42cb-afc5-5ee887dd8411
 
 ### 💻 Required
 
@@ -19,3 +19,5 @@ https://gist.github.com/assets/86094668/3f470d00-204d-43df-9f11-c8f358333860
 ### Demo
 
 [Download](target/reset-trial-app-1.0-jar-with-dependencies.jar?raw=true)
+
+
