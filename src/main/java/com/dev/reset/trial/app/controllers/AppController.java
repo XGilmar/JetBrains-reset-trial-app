@@ -144,7 +144,7 @@ public class AppController extends MouseAdapter implements ActionListener {
         if (osName.contains("win")) {
             new WindowsProduct().resetProductWindows();
         } else if (osName.contains("mac")) {
-            new MacProduct().resetProductMac();
+            new MacProduct().resetProductMac(name);
         } else if (osName.contains("nix") || osName.contains("nux") || osName.contains("aix")) {
             new LinuxProduct().resetProductLinux(name);
         } else {
