@@ -40,7 +40,7 @@ public class AppView extends javax.swing.JFrame {
                         + "[dark]foreground:shade(@foreground,40%);");
 
         labelGithub.setIcon(new FlatSVGIcon("icons/github.svg", 0.6f));
-        labelGithub.setText("XGilmarDev");
+        labelGithub.setText("Help");
         labelGithub.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
 
@@ -133,10 +133,10 @@ public class AppView extends javax.swing.JFrame {
         JScrollPane scroll = (JScrollPane) component.getParent().getParent();
         scroll.setBorder(BorderFactory.createEmptyBorder());
         scroll.getVerticalScrollBar().putClientProperty(FlatClientProperties.STYLE,
-                 "trackArc:999;"
-                + "trackInsets:3,3,3,3;"
-                + "thumbInsets:3,3,3,3;"
-                + "background:$Table.background;");
+                "trackArc:999;"
+                        + "trackInsets:3,3,3,3;"
+                        + "thumbInsets:3,3,3,3;"
+                        + "background:$Table.background;");
 
     }
 
