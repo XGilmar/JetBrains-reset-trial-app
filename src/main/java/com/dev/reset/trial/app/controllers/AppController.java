@@ -89,7 +89,7 @@ public class AppController extends MouseAdapter implements ActionListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         if (appView.labelGithub == e.getSource()) {
-            setAddress("https://github.com/XGilmar");
+            setAddress("https://github.com/XGilmar/JetBrains-reset-trial-app/issues");
         }
     }
 
