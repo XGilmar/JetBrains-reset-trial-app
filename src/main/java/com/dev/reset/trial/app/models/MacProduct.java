@@ -30,69 +30,66 @@ public class MacProduct {
 
     private List<String> generateBashCommandsMac(List<String> products) {
         List<String> bashCommands = new ArrayList<>();
-        for (String product : products) {
-            bashCommands.add(generateSingleBashCommandMac(product));
-        }
+//        for (String product : products) {
+        bashCommands.add(generateSingleBashCommandMac());
+//        }
         return bashCommands;
     }
 
-    private String generateSingleBashCommandMac(String product) {
+    private String generateSingleBashCommandMac() {
         return """
-                 #!/bin/bash
-                 product_name=%s
-                                
-                 prefs_file_one=~/Library/Preferences/com.apple.java.util.prefs.plist
-                 prefs_file_two=~/Library/Preferences/com.jetbrains.*.plist
-                 prefs_file_three=~/Library/Preferences/jetbrains.*.*.plist
-                                
-                 prefs_files=($prefs_file_one $prefs_file_two $prefs_file_three)
-                                
-                 echo "[ INFO ] Resetting period for $product_name"
-                                
-                    echo "Removing evaluation key..."
-                    if rm -rf ~/Library/Preferences/$product_name*/eval; then
-                       echo "[ OK ] Key removed successfully."\s
-                    else
-                       echo "[ ERROR ] Failed to remove key."
+                #!/bin/bash
+
+                prefs_file_one=~/Library/Preferences/com.apple.java.util.prefs.plist
+                prefs_file_two=~/Library/Preferences/com.jetbrains.*.plist
+                prefs_file_three=~/Library/Preferences/jetbrains.*.*.plist
+                            
+                prefs_files=($prefs_file_one $prefs_file_two $prefs_file_three)
+                  
+                for product_name in IntelliJIdea WebStorm DataGrip PhpStorm CLion PyCharm GoLand RubyMine Rider; do
+                                          
+                    if [ -f "~/Library/Preferences/$product_name*/eval" ]; then      
+                        rm -rf ~/Library/Preferences/$product_name*/eval
+                        echo "[ OK ] $product_name old path evaluation key removed successfully."
                     fi
                     
                     # Above path not working on latest version. Fixed below
-                    if rm -rf ~/Library/Application\\ Support/JetBrains/$product_name/eval; then
-                       echo "[ OK ] Latest version removed successfully."
-                    else
-                       echo "[ ERROR ] Failed to remove latest version."
+                    if [ -f "~/Library/Application\\ Support/JetBrains/$product_name/eval" ]; then      
+                        rm -rf ~/Library/Preferences/$product_name*/eval
+                        echo "[ OK ] $product_name old path evaluation key removed successfully."
                     fi
-                    
-                    echo "Removing evlsprt in options.xml..."
-                    sed -i '' '/evlsprt/d' ~/Library/Preferences/$product_name*/options/other.xml
-                    
-                    if [ $? -eq 0 ]; then
-                        echo "[ OK ] evlsprt removed successfully."
-                    else
-                        echo "[ ERROR ] Failed to remove evlsprt."
+
+                    if [ -f "~/Library/Preferences/$product_name*/options/other.xml" ]; then
+                        echo "Removing evlsprt in options.xml..."
+                        sed -i '' '/evlsprt/d' ~/Library/Preferences/$product_name*/options/other.xml
+                        
+                        if [ $? -eq 0 ]; then
+                            echo "[ OK ] $product_name old path evlsprt removed successfully."                   
+                        fi
                     fi
                     
                     # Above path not working on latest version. Fixed below
-                    sed -i '' '/evlsprt/d' ~/Library/Application\\ Support/JetBrains/$product_name*/options/other.xml
-                    if [ $? -eq 0 ]; then
-                        echo "[ OK ] Latest evlsprt removed successfully."
-                    else
-                        echo "[ ERROR ] Failed to remove latest evlsprt."
-                    fi
+                    if [ -f "~/Library/Application\\ Support/JetBrains/$product_name*/options/other.xml" ]; then
+                        sed -i '' '/evlsprt/d' ~/Library/Application\\ Support/JetBrains/$product_name*/options/other.xml
+                        if [ $? -eq 0 ]; then
+                            echo "[ OK ] $product_name new path evlsprt removed successfully."     
+                        fi      
+                    fi     
+                done                            
+                            
+                for file in ${prefs_files[@]}; do
+                    echo "[ INFO ] Removing ${file##*/}..."
+                      if rm "$file"; then
+                         echo "[ OK ] ${file##*/} removed successfully."
+                      else
+                         echo "[ ERROR ] Failed to remove ${file##*/}."
+                      fi
+                done
                               
-                                
-                  echo "[ INFO ] removing additional plist files..."
-                                
-                    for file in ${prefs_files[@]}; do
-                        echo "[ INFO ] Removing ${file##*/}..."
-                          if rm "$file"; then
-                             echo "[ OK ] ${file##*/} removed successfully."
-                          else
-                             echo "[ ERROR ] Failed to remove ${file##*/}."
-                          fi
-                    done
-                                
-                """.formatted(product);
+                echo "[ INFO ] restarting cfprefsd"
+                
+                killall cfprefsd                                
+                """.formatted();
     }
 
     private File createScriptFileMac(List<String> bashCommands) throws IOException {
