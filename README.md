@@ -27,6 +27,10 @@ https://github.com/user-attachments/assets/1339b94e-1dbf-4b44-a229-c7b63e4132f5
 
 ### Demo
 
-[Download](target/reset-trial-app-1.0-jar-with-dependencies.jar?raw=true)
+[Download](target/reset-trial-app-1.0.jar?raw=true)
 
+
+### Developed by
+[XGilmar](https://github.com/XGilmar) (Windows & Linux script)<br />
+[Daniel Oberlechner](https://github.com/DanielOberlechner) (macOS script)
 
